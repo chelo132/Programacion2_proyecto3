@@ -22,12 +22,26 @@ class App(ctk.CTk):
         self.tabview.pack(pady=20, padx=20, fill="both", expand=True)
 
         # Pestaña de Clientes
+        self.tab_ingredientes = self.tabview.add("Ingredientes")
+        self.crear_formulario_ingredientes(self.tab_ingredientes)
+        # pestaña menu
+        self.tab_menu = self.tabview.add("Menu")
+        self.crear_formulario_menu(self.tab_menu)
+
+        # Pestaña de Clientes
         self.tab_clientes = self.tabview.add("Clientes")
         self.crear_formulario_cliente(self.tab_clientes)
 
+        # pestaña panel de compra
+        self.tab_panel_de_compra = self.tabview.add("Panel de Compra")
+        self.crear_formulario_panel_de_compra(self.tab_panel_de_compra)
         # Pestaña de Pedidos
         self.tab_pedidos = self.tabview.add("Pedidos")
         self.crear_formulario_pedido(self.tab_pedidos)
+
+        # pestaña graficos
+        self.tab_graficos = self.tabview.add("Graficos")
+        
 
         # Revisar el cambio de pestaña periódicamente
         self.current_tab = self.tabview.get()  # Almacena la pestaña actual
@@ -42,6 +56,62 @@ class App(ctk.CTk):
                 self.actualizar_emails_combobox()
         self.after(500, self.check_tab_change)  # Vuelve a revisar cada 500 ms
 
+    def crear_formulario_ingredientes(self, parent):
+        """Crea el formulario en el Frame superior y el Treeview en el Frame inferior para la gestión de clientes."""
+        # Frame superior para el formulario y botones
+        frame_superior = ctk.CTkFrame(parent)
+        frame_superior.pack(pady=10, padx=10, fill="x")
+
+        ctk.CTkLabel(frame_superior, text="Nombre").grid(row=0, column=0, pady=10, padx=10)
+        self.entry_nombre = ctk.CTkEntry(frame_superior)
+        self.entry_nombre.grid(row=0, column=1, pady=10, padx=10)
+
+        ctk.CTkLabel(frame_superior, text="Tipo").grid(row=0, column=2, pady=10, padx=10)
+        self.entry_email = ctk.CTkEntry(frame_superior)
+        self.entry_email.grid(row=0, column=3, pady=10, padx=10)
+
+        # Botones alineados horizontalmente en el frame superior
+        self.btn_crear_cliente = ctk.CTkButton(frame_superior, text="Crear Ingrediente") # command
+        self.btn_crear_cliente.grid(row=1, column=0, pady=10, padx=10)
+
+        # Frame inferior para el Treeview
+        frame_inferior = ctk.CTkFrame(parent)
+        frame_inferior.pack(pady=10, padx=10, fill="both", expand=True)
+
+        # Treeview para mostrar los clientes
+        self.treeview_clientes = ttk.Treeview(frame_inferior, columns=("Nombre", "Tipo"), show="headings")
+        self.treeview_clientes.heading("Nombre", text="Nombre")
+        self.treeview_clientes.heading("Tipo", text="Tipo")
+        self.treeview_clientes.pack(pady=10, padx=10, fill="both", expand=True)
+
+    def crear_formulario_menu(self, parent):
+        """Crea el formulario en el Frame superior y el Treeview en el Frame inferior para la gestión de clientes."""
+        # Frame superior para el formulario y botones
+        frame_superior = ctk.CTkFrame(parent)
+        frame_superior.pack(pady=10, padx=10, fill="x")
+
+        ctk.CTkLabel(frame_superior, text="Nombre del Menu").grid(row=0, column=0, pady=10, padx=10)
+        self.entry_nombre = ctk.CTkEntry(frame_superior)
+        self.entry_nombre.grid(row=0, column=1, pady=10, padx=10)
+
+        ctk.CTkLabel(frame_superior, text="Descripcion").grid(row=0, column=2, pady=10, padx=10)
+        self.entry_email = ctk.CTkEntry(frame_superior)
+        self.entry_email.grid(row=0, column=3, pady=10, padx=10)
+
+        # Botones alineados horizontalmente en el frame superior
+        self.btn_crear_cliente = ctk.CTkButton(frame_superior, text="Crear Menu") # command
+        self.btn_crear_cliente.grid(row=1, column=0, pady=10, padx=10)
+
+        # Frame inferior para el Treeview
+        frame_inferior = ctk.CTkFrame(parent)
+        frame_inferior.pack(pady=10, padx=10, fill="both", expand=True)
+
+        # Treeview para mostrar los clientes
+        self.treeview_clientes = ttk.Treeview(frame_inferior, columns=("Nombre", "Descripcion"), show="headings")
+        self.treeview_clientes.heading("Nombre", text="Nombre")
+        self.treeview_clientes.heading("Descripcion", text="Descripcion")
+        self.treeview_clientes.pack(pady=10, padx=10, fill="both", expand=True)
+    
     def crear_formulario_cliente(self, parent):
         """Crea el formulario en el Frame superior y el Treeview en el Frame inferior para la gestión de clientes."""
         # Frame superior para el formulario y botones
@@ -56,6 +126,10 @@ class App(ctk.CTk):
         self.entry_email = ctk.CTkEntry(frame_superior)
         self.entry_email.grid(row=0, column=3, pady=10, padx=10)
 
+        ctk.CTkLabel(frame_superior, text="Edad").grid(row=0, column=4, pady=10, padx=10)
+        self.entry_edad = ctk.CTkEntry(frame_superior)
+        self.entry_edad.grid(row=0, column=5, pady=10, padx=10)
+
         # Botones alineados horizontalmente en el frame superior
         self.btn_crear_cliente = ctk.CTkButton(frame_superior, text="Crear Cliente", command=self.crear_cliente)
         self.btn_crear_cliente.grid(row=1, column=0, pady=10, padx=10)
@@ -66,17 +140,45 @@ class App(ctk.CTk):
         self.btn_eliminar_cliente = ctk.CTkButton(frame_superior, text="Eliminar Cliente", command=self.eliminar_cliente)
         self.btn_eliminar_cliente.grid(row=1, column=2, pady=10, padx=10)
 
+        self.btn_actualizar_data = ctk.CTkButton(frame_superior, text="Actualizar Datos", command=self.cargar_clientes)
+        self.btn_actualizar_data.grid(row=1, column=3, pady=10, padx=10)
+
         # Frame inferior para el Treeview
         frame_inferior = ctk.CTkFrame(parent)
         frame_inferior.pack(pady=10, padx=10, fill="both", expand=True)
 
         # Treeview para mostrar los clientes
-        self.treeview_clientes = ttk.Treeview(frame_inferior, columns=("Email", "Nombre"), show="headings")
+        self.treeview_clientes = ttk.Treeview(frame_inferior, columns=("Email", "Nombre", "Edad"), show="headings")
         self.treeview_clientes.heading("Email", text="Email")
         self.treeview_clientes.heading("Nombre", text="Nombre")
+        self.treeview_clientes.heading("Edad", text="Edad")
         self.treeview_clientes.pack(pady=10, padx=10, fill="both", expand=True)
 
         self.cargar_clientes()
+
+    def crear_formulario_panel_de_compra(self, parent):
+        """Crea el formulario en el Frame superior y el Treeview en el Frame inferior para la gestión de clientes."""
+        # Frame superior para el formulario y botones
+        frame_superior = ctk.CTkFrame(parent)
+        frame_superior.pack(pady=10, padx=10, fill="x")
+
+        self.menu_items = ["Desayuno Continental", "Almuerzo Completo", "Cena Ligera"]  # Lista de menús
+        self.menu_combobox = ctk.CTkComboBox(frame_superior, values=self.menu_items)
+        self.menu_combobox.grid(row=0, column=1, padx=10, pady=10)
+
+        # Botones alineados horizontalmente en el frame superior
+        self.btn_crear_cliente = ctk.CTkButton(frame_superior, text="Agregar a la Compra") # command
+        self.btn_crear_cliente.grid(row=0, column=5, pady=10, padx=10)
+
+        # Frame inferior para el Treeview
+        frame_inferior = ctk.CTkFrame(parent)
+        frame_inferior.pack(pady=10, padx=10, fill="both", expand=True)
+
+        # Treeview para mostrar los clientes
+        self.treeview_clientes = ttk.Treeview(frame_inferior, columns=("Nombre", "Descripcion"), show="headings")
+        self.treeview_clientes.heading("Nombre", text="Nombre")
+        self.treeview_clientes.heading("Descripcion", text="Descripcion")
+        self.treeview_clientes.pack(pady=10, padx=10, fill="both", expand=True)
 
     def crear_formulario_pedido(self, parent):
         """Crea el formulario en el Frame superior y el Treeview en el Frame inferior para la gestión de pedidos."""
@@ -132,15 +234,16 @@ class App(ctk.CTk):
         self.treeview_clientes.delete(*self.treeview_clientes.get_children())
         clientes = ClienteCRUD.leer_clientes(db)
         for cliente in clientes:
-            self.treeview_clientes.insert("", "end", values=(cliente.email, cliente.nombre))
+            self.treeview_clientes.insert("", "end", values=(cliente.email, cliente.nombre, cliente.edad))
         db.close()
 
     def crear_cliente(self):
         nombre = self.entry_nombre.get()
         email = self.entry_email.get()
+        edad = self.entry_edad.get()
         if nombre and email:
             db = next(get_session())
-            cliente = ClienteCRUD.crear_cliente(db, nombre, email)
+            cliente = ClienteCRUD.crear_cliente(db, nombre, email,edad)
             if cliente:
                 messagebox.showinfo("Éxito", "Cliente creado correctamente.")
                 self.cargar_clientes()
@@ -158,6 +261,7 @@ class App(ctk.CTk):
             return
         nombre = self.entry_nombre.get()
         email = self.entry_email.get()
+        edad = self.entry_edad.get()
         if not nombre.strip():
             messagebox.showwarning("Campo Vacío", "Por favor, ingrese un nombre.")
             return
@@ -166,9 +270,10 @@ class App(ctk.CTk):
             return
         email_viejo = self.treeview_clientes.item(selected_item)["values"][0]
         nombre = self.entry_nombre.get()
+        edad=self.entry_edad.get()
         if nombre:
             db = next(get_session())
-            cliente_actualizado = ClienteCRUD.actualizar_cliente(db, email_viejo, nombre,email)
+            cliente_actualizado = ClienteCRUD.actualizar_cliente(db, email_viejo, nombre,email,edad)
             if cliente_actualizado:
                 messagebox.showinfo("Éxito", "Cliente actualizado correctamente.")
                 self.cargar_clientes()
